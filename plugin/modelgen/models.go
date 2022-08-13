@@ -69,6 +69,10 @@ type Field struct {
 	Tag    string
 }
 
+func (f *Field) Nullable(name string) {
+	f.Tag = `json:"` + name + `,omitempty"`
+}
+
 type Enum struct {
 	Description string
 	Name        string
@@ -372,6 +376,10 @@ func (m *Plugin) generateFields(cfg *config.Config, schemaType *ast.Definition) 
 			Type:        typ,
 			Description: field.Description,
 			Tag:         `json:"` + field.Name + `"`,
+		}
+
+		if !field.Type.NonNull {
+			f.Nullable(field.Name)
 		}
 
 		if m.FieldHook != nil {
