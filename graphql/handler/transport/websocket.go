@@ -69,6 +69,14 @@ var (
 )
 
 func (t Websocket) Supports(r *http.Request) bool {
+	if r == nil {
+		log.Printf("[FIX!!!] request is nil")
+		return false
+	}
+	if r.Header == nil {
+		log.Printf("[FIX!!!] request.Header is nil")
+		return false
+	}
 	return r.Header.Get("Upgrade") != ""
 }
 
